@@ -1,13 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
-		<link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
-		<title>MVC With Burgers!</title>
-		<script src="https://code.jquery.com/jquery.js"></script>
-		<script src="/assets/js/burger.js"></script>
-	</head>
-	<body>
-		{{{ body }}}
-	</body>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+	<link rel="icon" type="image/png" href="http://www.freepngimg.com/download/burger/2-2-burger-free-download-png.png" />
+
+	<title>MVC With Burgers!</title>
+	<style>
+		body {
+			font-family: 'Arvo', serif;
+		}
+		h1 {
+			margin-top: -165px;
+			color: orangered;
+			font-weight: 600;
+			font-size: 5em;
+			text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+		}
+		h2 {
+			background-color: orangered;
+			border-radius: 10px;
+			color: white;
+			padding: 3px;
+		}
+	</style>
+</head>
+
+<body>
+	{{{ body }}}
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script>
+
+		$(".devour-button").on('click', function (event) {
+
+			event.preventDefault();
+
+			var id = this.id;
+
+			var updatedBurger = {
+				devoured: "TRUE"
+			};
+
+
+			// Send the PUT request.
+			$.ajax("/api/burgers/" + id, {
+				type: "PUT",
+				data: updatedBurger
+			}).then(
+				function () {
+					console.log("changed devoured to TRUE");
+					// Reload the page to get the updated list
+					location.reload();
+				}
+			);
+
+
+		});
+
+		$("#submit-button").on('click', function (event) {
+
+			event.preventDefault();
+
+			var newBurger = {
+				burger_name: $("#burger-input").val().trim(),
+				devoured: 0
+			};
+
+			// Send the POST request.
+			$.ajax("/api/burgers", {
+				type: "POST",
+				data: newBurger
+			}).then(
+				function () {
+					console.log("created new burger");
+					// Reload the page to get the updated list
+					location.reload();
+				}
+			);
+
+
+		});
+	</script>
+</body>
+
 </html>
